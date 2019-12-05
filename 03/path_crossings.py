@@ -12,14 +12,13 @@ def draw_line(line: str, starting_coords: Tuple[int, int]) -> Tuple[List[Tuple[i
     path_coords = []
 
     move_from = 0
-    if direction == 'R' or direction == 'L':
+    if direction in ['R', 'L']:
         move_from = starting_coords[0]
     else:
         move_from = starting_coords[1]
 
     ending_coords = None
     for _ in range(length):
-        new_coord = None
         if direction == 'R':
             move_from += 1
             path_coords += (move_from, starting_coords[1])
