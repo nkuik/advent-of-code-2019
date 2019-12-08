@@ -1,5 +1,6 @@
 import csv
 
+from collections import deque
 from typing import Dict
 
 orbits = []
@@ -38,23 +39,29 @@ for planet in indirect_orbits.keys():
     total_orbits += find_all_orbits(indirect_orbits, planet)
 
 # From: https://www.python.org/doc/essays/graphs/
-def find_shortest_path(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return path
-    if not graph.has_key(start):
-        return None
-    shortest = None
-    for node in graph[start]:
-        if node not in path:
-            newpath = find_shortest_path(graph, node, end, path)
-            if newpath:
-                if not shortest or len(newpath) < len(shortest):
-                    shortest = newpath
-    return shortest
+def find_shortest_path(graph, start, end):
+    dist = {start: [start]}
+    q = deque([start])
+    while len(q):
+        at = q.popleft()
+        for next in graph[at]:
+            if next not in dist:
+                dist[next] = [dist[at], next]
+                q.append(next)
+    return dist.get(end)
 
 
-shortest_path = find_shortest_path(bidirectional_orbits, 'YOU', 'SAN')
+def flatten(container):
+    for i in container:
+        if isinstance(i, (list,tuple)):
+            for j in flatten(i):
+                yield j
+        else:
+            yield i
 
 
-print(f'Total orbits is {total_orbits}')
+shortest_path = find_shortest_path(bidirectional_orbits, '8NZ', 'J2F')
+shortest_path = list(flatten(shortest_path))
+number_orbital_transers = (len(shortest_path) - 1)
+
+print(f'Number of orbital transfers is {number_orbital_transers}')
