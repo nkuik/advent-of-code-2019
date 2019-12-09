@@ -29,11 +29,13 @@ def handle_input(input_list: List[str], int_to_match) -> str:
         list_copy = original_list
     return 1
 
+
 inputs_list = []
 with open('puzzle_input.csv') as csvfile:
     inputs = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in inputs:
         inputs_list += row
+
 
 checked = 0
 for i in range(100):
@@ -44,5 +46,3 @@ for i in range(100):
         if handle_input(copy_list, 19690720) is 0:
             print(f'noun is {i}')
             print(f'verb is {j}')
-
-
