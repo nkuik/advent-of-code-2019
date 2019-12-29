@@ -98,6 +98,7 @@ winning_asteroid, most_seen = find_best_asteroid(asteroids)
 print(f'Winning asteroid is: {winning_asteroid}')
 print(f'Number of asteroids that can be seen: {most_seen}')
 
+
 @clock
 def vaporize_asteroids(base_location, asteroids) -> List[Tuple[Asteroid, Vector]]:
     od = OrderedDict()
@@ -132,4 +133,4 @@ vapo_order = vaporize_asteroids(winning_asteroid, asteroids)
 
 vapo_200 = vapo_order[199]
 
-print(f'200 is {vapo_200}')
+print(f'200th asteroid to be vaporized is {vapo_200}')
