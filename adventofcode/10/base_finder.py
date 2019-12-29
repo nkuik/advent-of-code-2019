@@ -98,6 +98,7 @@ winning_asteroid, most_seen = find_best_asteroid(asteroids)
 print(f'Winning asteroid is: {winning_asteroid}')
 print(f'Number of asteroids that can be seen: {most_seen}')
 
+@clock
 def vaporize_asteroids(base_location, asteroids) -> List[Tuple[Asteroid, Vector]]:
     od = OrderedDict()
     beginning_angle = -1.5707963267948966
