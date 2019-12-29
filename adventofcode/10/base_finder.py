@@ -3,7 +3,7 @@ import math
 import time
 import functools
 
-from collections import namedtuple
+from collections import deque, namedtuple, OrderedDict
 from typing import List, Tuple
 
 
@@ -95,7 +95,40 @@ def find_best_asteroid(asteroids) -> Tuple[Asteroid, int]:
     return winning_asteroid, most_seen
 
 winning_asteroid, most_seen = find_best_asteroid(asteroids)
-
-
 print(f'Winning asteroid is: {winning_asteroid}')
 print(f'Number of asteroids that can be seen: {most_seen}')
+
+def vaporize_asteroids(base_location, asteroids) -> List[Tuple[Asteroid, Vector]]:
+    od = OrderedDict()
+    beginning_angle = -1.5707963267948966
+    vectors = [(asteroid, Vector(offset_point_by_origin(base_location, asteroid))) 
+               for asteroid in asteroids
+               if asteroid is not base_location]
+    vectors.sort(key=lambda x: x[1].angle())
+    vector_queue = deque(vectors)
+    vector_queue.rotate(-119)
+    for vector in vector_queue:
+        if not od.get(vector[1].angle()):
+            od[vector[1].angle()] = [vector]
+        else:
+            od[vector[1].angle()].append(vector)
+    
+    vapo_order = []
+    
+    list_of_vectors = [value for key, value in od.items()]
+    longest_vector = max(len(vector_list) for vector_list in list_of_vectors)
+
+    for i in range (longest_vector):
+        for vector_list in list_of_vectors:
+            try:
+                vapo_order.append(vector_list[i])
+            except:
+                pass
+
+    return vapo_order
+
+vapo_order = vaporize_asteroids(winning_asteroid, asteroids)
+
+vapo_200 = vapo_order[199]
+
+print(f'200 is {vapo_200}')
