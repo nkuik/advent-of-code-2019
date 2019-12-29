@@ -1,5 +1,7 @@
 import csv
 import math
+import time
+import functools
 
 from collections import namedtuple
 from typing import List, Tuple
@@ -52,15 +54,19 @@ def offset_point_by_origin(origin: Asteroid, point_to_offset: Asteroid) -> Aster
     return Asteroid(x = point_to_offset.x - origin.x, y = point_to_offset.y - origin.y)
 
 
-most_seen = float('-inf')
-winning_asteroid = None
-for asteroid in asteroids:
-    vectors = [Vector(offset_point_by_origin(asteroid, asteroid_to_compare)) for asteroid_to_compare in asteroids
-               if asteroid_to_compare is not asteroid]
-    asteroids_seen = len(set([vector.angle() for vector in vectors]))
-    if asteroids_seen > most_seen:
-        most_seen = asteroids_seen
-        winning_asteroid = asteroid
+def find_best_asteroid(asteroids) -> Tuple:
+    most_seen = float('-inf')
+    winning_asteroid = None
+    for asteroid in asteroids:
+        vectors = [Vector(offset_point_by_origin(asteroid, asteroid_to_compare)) for asteroid_to_compare in asteroids
+                if asteroid_to_compare is not asteroid]
+        asteroids_seen = len(set([vecimportor.angle() for vector in vectors]))
+        if asteroids_seen > most_seen:
+            most_seen = asteroids_seen
+            winning_asteroid = asteroid
+    return winning_asteroid, most_seen
+
+winning_asteroid, most_seen = find_best_asteroid(asteroids)
 
 
 print(f'Winning asteroid is: {winning_asteroid}')
